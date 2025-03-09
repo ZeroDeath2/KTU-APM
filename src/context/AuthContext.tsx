@@ -1,17 +1,17 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 
 interface AuthContextType {
   isAuthenticated: boolean;
-  userType: 'student' | 'staff' | null;
-  login: (type: 'student' | 'staff') => void;
+  userType: 'student' | 'staff' | 'admin' | null;
+  login: (userType: 'student' | 'staff' | 'admin') => void;
   logout: () => void;
 }
 
-const AuthContext = createContext<AuthContextType | null>(null);
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
-  if (!context) {
+  if (context === undefined) {
     throw new Error('useAuth must be used within an AuthProvider');
   }
   return context;
@@ -19,27 +19,18 @@ export const useAuth = () => {
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [userType, setUserType] = useState<'student' | 'staff' | null>(null);
+  const [userType, setUserType] = useState<'student' | 'staff' | 'admin' | null>(null);
 
-  useEffect(() => {
-    // Check localStorage for existing session
-    const storedUserType = localStorage.getItem('userType');
-    if (storedUserType === 'student' || storedUserType === 'staff') {
-      setIsAuthenticated(true);
-      setUserType(storedUserType);
-    }
-  }, []);
-
-  const login = (type: 'student' | 'staff') => {
+  const login = (type: 'student' | 'staff' | 'admin') => {
     setIsAuthenticated(true);
     setUserType(type);
-    localStorage.setItem('userType', type);
+    localStorage.setItem('userRole', type);
   };
 
   const logout = () => {
     setIsAuthenticated(false);
     setUserType(null);
-    localStorage.removeItem('userType');
+    localStorage.removeItem('userRole');
   };
 
   return (
