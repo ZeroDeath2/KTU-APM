@@ -3,34 +3,17 @@ import { GraduationCap, Mail, Lock, ArrowRight } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 
-const Login = () => {
+const AdminLogin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [userType, setUserType] = useState<'student' | 'staff' | 'admin'>('student');
   const navigate = useNavigate();
   const { login } = useAuth();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Add actual authentication logic here
-    login(userType);
-    if (userType === 'student') {
-      navigate('/student/dashboard');
-    } else if (userType === 'staff') {
-      navigate('/staff/dashboard');
-    } else {
-      navigate('/admin/dashboard');
-    }
-  };
-
-  const handleDownloadGuidelines = () => {
-    const link = document.createElement('a');
-    link.href = '/files/act.pdf';
-    link.target = '_blank';
-    link.rel = 'noopener noreferrer';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    login('admin');
+    navigate('/admin/dashboard');
   };
 
   return (
@@ -44,15 +27,7 @@ const Login = () => {
             </div>
             <div className="hidden md:flex items-center space-x-8">
               <Link to="/" className="text-white hover:text-white/80 px-3 py-2 font-medium">Home</Link>
-              <button 
-                onClick={handleDownloadGuidelines}
-                className="text-white hover:text-white/80 px-3 py-2 font-medium"
-              >
-                Guidelines
-              </button>
-              <Link to="/staff" className="text-white hover:text-white/80 px-3 py-2 font-medium">Staff</Link>
-              <Link to="/student" className="text-white hover:text-white/80 px-3 py-2 font-medium">Student</Link>
-              <Link to="/about" className="text-white hover:text-white/80 px-3 py-2 font-medium">About Us</Link>
+              <Link to="/login" className="text-white hover:text-white/80 px-3 py-2 font-medium">Back to Login</Link>
             </div>
           </div>
         </div>
@@ -79,31 +54,15 @@ const Login = () => {
               <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-100 mb-4">
                 <GraduationCap className="w-8 h-8 text-blue-600" />
               </div>
-              <h1 className="text-2xl font-bold text-gray-900">Welcome Back</h1>
-              <p className="text-gray-600 mt-2">Sign in to manage your activity points</p>
+              <h1 className="text-2xl font-bold text-gray-900">Admin Login</h1>
+              <p className="text-gray-600 mt-2">Sign in to access admin dashboard</p>
             </div>
 
             {/* Login Form */}
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
-                <label htmlFor="userType" className="block text-sm font-medium text-gray-700 mb-2">
-                  Login As
-                </label>
-                <select
-                  id="userType"
-                  value={userType}
-                  onChange={(e) => setUserType(e.target.value as 'student' | 'staff' | 'admin')}
-                  className="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
-                >
-                  <option value="student">Student</option>
-                  <option value="staff">Staff</option>
-                  <option value="admin">Admin</option>
-                </select>
-              </div>
-
-              <div>
                 <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                  College Email
+                  Admin Email
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -115,7 +74,7 @@ const Login = () => {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
-                    placeholder="your.email@college.edu"
+                    placeholder="admin@college.edu"
                     required
                   />
                 </div>
@@ -141,17 +100,7 @@ const Login = () => {
                 </div>
               </div>
 
-              <div className="flex items-center justify-between">
-                <div className="flex items-center">
-                  <input
-                    id="remember-me"
-                    type="checkbox"
-                    className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded bg-white"
-                  />
-                  <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700">
-                    Remember me
-                  </label>
-                </div>
+              <div className="flex items-center justify-end">
                 <a href="#" className="text-sm font-medium text-blue-600 hover:text-blue-500">
                   Forgot password?
                 </a>
@@ -165,16 +114,6 @@ const Login = () => {
                 <ArrowRight className="ml-2 h-4 w-4" />
               </button>
             </form>
-
-            {/* Footer */}
-            <div className="mt-6 text-center">
-              <p className="text-sm text-gray-600">
-                Are you an admin?{' '}
-                <Link to="/admin/login" className="font-medium text-blue-600 hover:text-blue-500">
-                  Admin login
-                </Link>
-              </p>
-            </div>
           </div>
         </div>
       </div>
@@ -182,4 +121,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default AdminLogin;

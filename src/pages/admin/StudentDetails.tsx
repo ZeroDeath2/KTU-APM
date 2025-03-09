@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Eye, ArrowLeft, FileText, Download } from 'lucide-react';
+import { Eye, ArrowLeft, FileText, Download, UserCircle } from 'lucide-react';
 import DashboardLayout from './DashboardLayout';
 
 interface Certificate {
@@ -21,6 +21,12 @@ interface Student {
   totalCertificates: number;
   totalPoints: number;
   lastUpload: string;
+  assignedStaff: {
+    id: string;
+    name: string;
+    department: string;
+    email: string;
+  };
 }
 
 const StudentDetails = () => {
@@ -35,7 +41,13 @@ const StudentDetails = () => {
     department: 'Computer Science',
     totalCertificates: 5,
     totalPoints: 45,
-    lastUpload: '2024-03-08'
+    lastUpload: '2024-03-08',
+    assignedStaff: {
+      id: '1',
+      name: 'Prof. Sarah Wilson',
+      department: 'Computer Science',
+      email: 'sarah.wilson@ktu.edu'
+    }
   };
 
   const [certificates, setCertificates] = useState<Certificate[]>([
@@ -60,7 +72,7 @@ const StudentDetails = () => {
   ]);
 
   const handleView = (certificate: Certificate) => {
-    navigate(`/staff/certificates/${certificate.id}`);
+    navigate(`/admin/certificates/${certificate.id}`);
   };
 
   const handleDownload = (certificate: Certificate) => {
@@ -84,16 +96,22 @@ const StudentDetails = () => {
       <div className="mb-8 flex items-center justify-between">
         <div className="flex items-center">
           <button
-            onClick={() => navigate('/staff/students')}
+            onClick={() => navigate('/admin/students')}
             className="mr-4 p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors duration-200"
           >
             <ArrowLeft className="h-6 w-6" />
           </button>
           <div>
             <h1 className="text-3xl font-bold text-gray-900">Student Details</h1>
-            <p className="text-gray-600 mt-1">View student certificates and activity points.</p>
+            <p className="text-gray-600 mt-1">View student information and certificates.</p>
           </div>
         </div>
+        <button
+          onClick={() => navigate(`/admin/students/${id}/edit`)}
+          className="px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 shadow-sm font-medium"
+        >
+          Edit Student
+        </button>
       </div>
 
       {/* Student Info Card */}
@@ -129,6 +147,33 @@ const StudentDetails = () => {
           <div className="space-y-1">
             <p className="text-sm font-medium text-gray-500">Last Upload</p>
             <p className="text-lg font-medium text-gray-900">{student.lastUpload}</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Staff Info Card */}
+      <div className="bg-white rounded-xl shadow-sm overflow-hidden border border-indigo-100 mb-8">
+        <div className="px-6 py-4 border-b border-indigo-100 bg-gradient-to-r from-blue-50 to-indigo-50">
+          <h2 className="text-lg font-semibold text-gray-900">Assigned Staff</h2>
+        </div>
+        <div className="p-6">
+          <div className="flex items-center space-x-4">
+            <div className="flex-shrink-0">
+              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-100 to-indigo-100 flex items-center justify-center">
+                <UserCircle className="w-8 h-8 text-indigo-600" />
+              </div>
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-lg font-medium text-gray-900 truncate">
+                {student.assignedStaff.name}
+              </p>
+              <p className="text-sm text-gray-500">
+                {student.assignedStaff.department}
+              </p>
+              <p className="text-sm text-gray-500">
+                {student.assignedStaff.email}
+              </p>
+            </div>
           </div>
         </div>
       </div>

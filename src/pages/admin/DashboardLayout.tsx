@@ -1,5 +1,5 @@
 import React from 'react';
-import { LayoutDashboard, FileCheck, FileX, Flag, User, LogOut, Settings } from 'lucide-react';
+import { LayoutDashboard, Users, GraduationCap, LogOut, User } from 'lucide-react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 interface DashboardLayoutProps {
@@ -11,10 +11,9 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
   const navigate = useNavigate();
   
   const menuItems = [
-    { icon: LayoutDashboard, text: 'Dashboard', href: '/staff/dashboard' },
-    { icon: FileCheck, text: 'Manage Students', href: '/staff/students' },
-    { icon: Flag, text: 'Flagged Certificates', href: '/staff/flagged' },
-    { icon: FileX, text: 'Incomplete Submissions', href: '/staff/incomplete' },
+    { icon: LayoutDashboard, text: 'Dashboard', href: '/admin/dashboard' },
+    { icon: GraduationCap, text: 'Manage Students', href: '/admin/students' },
+    { icon: Users, text: 'Manage Staff', href: '/admin/staff' },
   ];
 
   const handleLogout = () => {
@@ -34,7 +33,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
             <div className="flex items-center space-x-4">
               <div className="flex items-center text-white">
                 <User className="h-5 w-5 mr-2 text-white/80" />
-                <span className="text-sm font-medium">#Staff</span>
+                <span className="text-sm font-medium">#Admin</span>
               </div>
               <div className="w-px h-6 bg-white/20"></div>
               <button
