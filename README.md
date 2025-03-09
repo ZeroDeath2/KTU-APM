@@ -62,7 +62,7 @@ A comprehensive web application for managing student activity points across diff
 1. Clone the repository
 ```bash
 git clone <repository-url>
-cd ktu-activity-points
+cd ktu-apm
 ```
 
 2. Install dependencies
